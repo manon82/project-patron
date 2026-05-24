@@ -14,10 +14,10 @@ EQ            = =
 
 CC            = gcc
 CXX           = g++
-DEFINES       = -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
+DEFINES       = -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_SVG_LIB -DQT_GUI_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -O2 -Wall -Wextra -fPIC -D_REENTRANT $(DEFINES)
 CXXFLAGS      = -pipe -O2 -Wall -Wextra -fPIC -D_REENTRANT $(DEFINES)
-INCPATH       = -I. -I/usr/include/x86_64-linux-gnu/qt6 -I/usr/include/x86_64-linux-gnu/qt6/QtWidgets -I/usr/include/x86_64-linux-gnu/qt6/QtGui -I/usr/include/x86_64-linux-gnu/qt6/QtCore -I. -I/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++
+INCPATH       = -I. -I/usr/include/x86_64-linux-gnu/qt6 -I/usr/include/x86_64-linux-gnu/qt6/QtWidgets -I/usr/include/x86_64-linux-gnu/qt6/QtSvg -I/usr/include/x86_64-linux-gnu/qt6/QtGui -I/usr/include/x86_64-linux-gnu/qt6/QtCore -I. -I/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++
 QMAKE         = /usr/bin/qmake6
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -40,7 +40,7 @@ DISTNAME      = mon_patron1.0.0
 DISTDIR = /home/manon/perso/mon_patron/.tmp/mon_patron1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-O1 -Wl,-rpath-link,/usr/lib/x86_64-linux-gnu
-LIBS          = $(SUBLIBS) /usr/lib/x86_64-linux-gnu/libQt6Widgets.so /usr/lib/x86_64-linux-gnu/libQt6Gui.so /usr/lib/x86_64-linux-gnu/libGLX.so /usr/lib/x86_64-linux-gnu/libOpenGL.so /usr/lib/x86_64-linux-gnu/libQt6Core.so -lpthread -lGLX -lOpenGL   
+LIBS          = $(SUBLIBS) /usr/lib/x86_64-linux-gnu/libQt6Widgets.so /usr/lib/x86_64-linux-gnu/libQt6Svg.so /usr/lib/x86_64-linux-gnu/libQt6Gui.so /usr/lib/x86_64-linux-gnu/libGLX.so /usr/lib/x86_64-linux-gnu/libOpenGL.so /usr/lib/x86_64-linux-gnu/libQt6Core.so -lpthread -lGLX -lOpenGL   
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -111,6 +111,8 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/modules/qt_lib_quickwidgets.pri \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/modules/qt_lib_sql.pri \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/modules/qt_lib_sql_private.pri \
+		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/modules/qt_lib_svg.pri \
+		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/modules/qt_lib_svgwidgets.pri \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/modules/qt_lib_testlib.pri \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/modules/qt_lib_testlib_private.pri \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/modules/qt_lib_widgets.pri \
@@ -143,7 +145,8 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/lex.prf \
 		mon_patron.pro Mesures.h \
-		PatronJupes.h main.cpp
+		PatronJupe.h \
+		Exporteur.h main.cpp
 QMAKE_TARGET  = mon_patron
 DESTDIR       = 
 TARGET        = mon_patron
@@ -212,6 +215,8 @@ Makefile: mon_patron.pro /usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++/qmake.c
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/modules/qt_lib_quickwidgets.pri \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/modules/qt_lib_sql.pri \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/modules/qt_lib_sql_private.pri \
+		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/modules/qt_lib_svg.pri \
+		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/modules/qt_lib_svgwidgets.pri \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/modules/qt_lib_testlib.pri \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/modules/qt_lib_testlib_private.pri \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/modules/qt_lib_widgets.pri \
@@ -245,6 +250,7 @@ Makefile: mon_patron.pro /usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++/qmake.c
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/lex.prf \
 		mon_patron.pro \
 		/usr/lib/x86_64-linux-gnu/libQt6Widgets.prl \
+		/usr/lib/x86_64-linux-gnu/libQt6Svg.prl \
 		/usr/lib/x86_64-linux-gnu/libQt6Gui.prl \
 		/usr/lib/x86_64-linux-gnu/libQt6Core.prl
 	$(QMAKE) -o Makefile mon_patron.pro
@@ -305,6 +311,8 @@ Makefile: mon_patron.pro /usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++/qmake.c
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/modules/qt_lib_quickwidgets.pri:
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/modules/qt_lib_sql.pri:
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/modules/qt_lib_sql_private.pri:
+/usr/lib/x86_64-linux-gnu/qt6/mkspecs/modules/qt_lib_svg.pri:
+/usr/lib/x86_64-linux-gnu/qt6/mkspecs/modules/qt_lib_svgwidgets.pri:
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/modules/qt_lib_testlib.pri:
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/modules/qt_lib_testlib_private.pri:
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/modules/qt_lib_widgets.pri:
@@ -338,6 +346,7 @@ Makefile: mon_patron.pro /usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++/qmake.c
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/lex.prf:
 mon_patron.pro:
 /usr/lib/x86_64-linux-gnu/libQt6Widgets.prl:
+/usr/lib/x86_64-linux-gnu/libQt6Svg.prl:
 /usr/lib/x86_64-linux-gnu/libQt6Gui.prl:
 /usr/lib/x86_64-linux-gnu/libQt6Core.prl:
 qmake: FORCE
@@ -355,7 +364,7 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents Mesures.h PatronJupes.h $(DISTDIR)/
+	$(COPY_FILE) --parents Mesures.h PatronJupe.h Exporteur.h $(DISTDIR)/
 	$(COPY_FILE) --parents main.cpp $(DISTDIR)/
 
 
@@ -407,7 +416,8 @@ compiler_clean: compiler_moc_predefs_clean
 ####### Compile
 
 main.o: main.cpp PatronJupe.h \
-		Mesures.h
+		Mesures.h \
+		Exporteur.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 ####### Install

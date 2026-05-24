@@ -5,21 +5,23 @@ double echelle = 4;
 
 class PatronJupe : public QGraphicsPathItem {
 public:
-    PatronJupe(const Mesures &m) {
+    // On ajoute un type de pièce : 0 pour devant, 1 pour demi-dos
+    PatronJupe(const Mesures &m, int typePiece, double decalageX) {
         QPainterPath path;
-        double largeurHanche = (m.tourHanche / 4.0) * echelle;
-        double longueurJupe = m.longueurJupe * echelle;
-
-        double offsetX = 100;
+        
+        // 1. Calculs
+        // Le devant = tourHanche/2. Le demi-dos = tourHanche/4
+        double largeur = (typePiece == 0) ? (m.tourHanche / 2.0) * echelle 
+                                          : (m.tourHanche / 4.0) * echelle;
+        double hauteur = m.longueurJupe * echelle;
+        
         double offsetY = 100;
 
-        path.moveTo(offsetX, offsetY); 
-        path.lineTo(offsetX + largeurHanche, offsetY);
-        path.lineTo(offsetX + largeurHanche, offsetY + longueurJupe);
-        path.lineTo(offsetX, offsetY + longueurJupe);
-        path.lineTo(offsetX, offsetY);
+        // 2. Tracé
+        path.addRect(decalageX, offsetY, largeur, hauteur);
 
         setPath(path);
-        setBrush(Qt::cyan);
+        // Couleur différente pour mieux distinguer
+        setBrush(typePiece == 0 ? Qt::cyan : Qt::lightGray);
     }
 };
